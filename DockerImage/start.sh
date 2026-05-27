@@ -2,6 +2,10 @@
 
 cd /home/runner/actions-runner || exit
 
+# Cleanup docker dirs because docker fails to start if they haven`t been cleaned up after restart
+sudo rm -f /var/run/docker.pid
+sudo rm -rf /var/run/docker
+
 ./config.sh --url https://github.com/${REPOSITORY_OWNER} --token ${REG_TOKEN} --runnergroup $RUNNER_GROUP --labels $LABELS
 
 sudo /usr/local/bin/dind dockerd --log-level=error &
