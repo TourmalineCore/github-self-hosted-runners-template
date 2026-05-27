@@ -34,17 +34,20 @@ RUN install -m 0755 -d /etc/apt/keyrings && \
 RUN curl -fsSL --retry 3 "https://github.com/moby/moby/raw/docker-v${DOCKER_VERSION}/hack/dind" -o /usr/local/bin/dind \
   && chmod a+x /usr/local/bin/dind
 
-# Ranner cannot be run as the root user, so it`s needed to create a separate user
+# Runner cannot be run as the root user, so it`s needed to create a separate user
 RUN useradd -m runner && \
     usermod -aG docker runner && \
     usermod -aG sudo runner && \
     echo "%sudo   ALL=(ALL:ALL) NOPASSWD:ALL" > /etc/sudoers
 
-RUN cd /home/runner && \
+ARG TARGETARCH
+
+RUN ARCH=$([ "$TARGETARCH" = "amd64" ] && echo x64 || echo arm64) && \
+    cd /home/runner && \
     mkdir actions-runner && \
     cd actions-runner && \
-    curl -o actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz -L https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz && \
-    tar xzf ./actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz
+    curl -o actions-runner-linux-${ARCH}-${RUNNER_VERSION}.tar.gz -L https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-${ARCH}-${RUNNER_VERSION}.tar.gz && \
+    tar xzf ./actions-runner-linux-${ARCH}-${RUNNER_VERSION}.tar.gz
 
 USER runner
 

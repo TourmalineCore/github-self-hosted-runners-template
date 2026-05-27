@@ -2,8 +2,6 @@ services:
   amd64-runner:
     profiles:
       - amd64
-    build:
-      dockerfile: Dockerfile
     extends:
       file: .reusable-runner.yml
       service: runner
@@ -11,8 +9,6 @@ services:
   arm64-runner:
     profiles:
       - arm64
-    build:
-      dockerfile: Dockerfile.mac
     platform: linux/arm64
     extends:
       file: .reusable-runner.yml
