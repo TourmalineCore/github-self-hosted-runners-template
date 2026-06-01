@@ -1,7 +1,7 @@
 FROM ubuntu:24.04
 
 ARG RUNNER_VERSION="2.334.0"
-ARG DOCKER_VERSION="29.5.2"
+ARG DOCKER_VERSION="28.5.2"
 
 # curl and sudo is needed to install packages
 # libicu-dev is needed to run a runner
@@ -31,7 +31,7 @@ RUN install -m 0755 -d /etc/apt/keyrings && \
                    docker-compose-plugin && \
     rm -rf /var/lib/apt/lists/*
 
-RUN curl -fsSL --retry 3 "https://github.com/moby/moby/raw/docker-v${DOCKER_VERSION}/hack/dind" -o /usr/local/bin/dind \
+RUN curl -fsSL --retry 3 "https://github.com/moby/moby/raw/v${DOCKER_VERSION}/hack/dind" -o /usr/local/bin/dind \
   && chmod a+x /usr/local/bin/dind
 
 # Runner cannot be run as the root user, so it`s needed to create a separate user
