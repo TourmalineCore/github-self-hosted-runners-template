@@ -1,15 +1,18 @@
 services:
-  amd64-runner:
-    profiles:
-      - amd64
-    extends:
-      file: .reusable-runner.yml
-      service: runner
-
-  arm64-runner:
-    profiles:
-      - arm64
-    platform: linux/arm64
-    extends:
-      file: .reusable-runner.yml
-      service: runner
+  runner:
+    build:
+      dockerfile: Dockerfile
+      context: ./DockerImage
+    restart: unless-stopped
+    env_file: .env
+    privileged: true
+    deploy:
+      mode: replicated
+      replicas: 2
+      resources:
+       limits:
+        cpus: '2'
+        memory: 2G
+       reservations:
+        cpus: '0.4'
+        memory: 256M
