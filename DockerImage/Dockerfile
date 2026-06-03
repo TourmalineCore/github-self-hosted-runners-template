@@ -11,7 +11,6 @@ RUN apt-get update -y && \
     apt-get install -y \
                 curl \
                 sudo \
-                libicu-dev \
                 ca-certificates
 
 RUN install -m 0755 -d /etc/apt/keyrings && \
@@ -48,6 +47,8 @@ RUN ARCH=$([ "$TARGETARCH" = "amd64" ] && echo x64 || echo arm64) && \
     cd actions-runner && \
     curl -o actions-runner-linux-${ARCH}-${RUNNER_VERSION}.tar.gz -L https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-${ARCH}-${RUNNER_VERSION}.tar.gz && \
     tar xzf ./actions-runner-linux-${ARCH}-${RUNNER_VERSION}.tar.gz
+
+RUN /home/runner/actions-runner/bin/installdependencies.sh
 
 USER runner
 
