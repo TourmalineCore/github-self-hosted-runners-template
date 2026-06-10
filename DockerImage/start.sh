@@ -8,6 +8,7 @@ sudo rm -rf /var/run/docker
 
 ./config.sh --url https://github.com/${REPOSITORY_OWNER} --token ${REG_TOKEN} --runnergroup $RUNNER_GROUP --labels $LABELS
 
+# Start docker daemon using Docker in Docker
 sudo /usr/local/bin/dind dockerd --log-level=error &
 
 cleanup() {
@@ -17,4 +18,5 @@ cleanup() {
 
 trap 'cleanup' TERM 
 
+# Ctart runner
 ./run.sh & wait $!
