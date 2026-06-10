@@ -4,16 +4,16 @@ cd /home/runner/actions-runner || exit
 
 ./config.sh --url https://github.com/${REPOSITORY_OWNER} --token ${REG_TOKEN} --runnergroup $RUNNER_GROUP --labels $LABELS
 
-# Получаем ID группы, которой принадлежит файл
+# Get the ID of the group to which the file belongs
 export DOCKER_GID=$(stat -c '%g' /var/run/docker.sock)
 
-# Проверяем, существует ли группа
+# Checking if a group exists
 if getent group "${DOCKER_GID}" >/dev/null; then
-  # Сразу добавляем пользователя в группу, потому что она уже создана
+  # Adding a user to the group because it has already been created
   export DOCKER_GNAME=$(stat -c '%G' /var/run/docker.sock)
   sudo usermod -aG ${DOCKER_GNAME} runner  
 else
-  # Создаем группу, если ее еще нет и добавляем в нее пользователя
+  # Create a group if one doesn't already exist, and add the user to it
   sudo groupadd -g ${DOCKER_GID} docker
   sudo usermod -aG docker runner
 fi
