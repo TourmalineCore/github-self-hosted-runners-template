@@ -21,11 +21,16 @@ RUN install -m 0755 -d /etc/apt/keyrings && \
     apt install -y --no-install-recommends \
                    containerd.io \
                    docker-buildx-plugin \
+                   docker-ce=5:${DOCKER_VERSION}-1~ubuntu.24.04~noble \
                    docker-ce-cli=5:${DOCKER_VERSION}-1~ubuntu.24.04~noble \
                    docker-compose-plugin && \
     rm -rf /var/lib/apt/lists/*
 
+RUN curl -fsSL --retry 3 "https://github.com/moby/moby/raw/v${DOCKER_VERSION}/hack/dind" -o /usr/local/bin/dind \
+  && chmod a+x /usr/local/bin/dind
+
 RUN useradd -m runner && \
+    usermod -aG docker runner && \
     usermod -aG sudo runner && \
     echo "%sudo   ALL=(ALL:ALL) NOPASSWD:ALL" > /etc/sudoers
 
@@ -47,5 +52,9 @@ USER runner
 # Copy the script and make it executable
 COPY start.sh /start.sh
 RUN sudo chmod +x /start.sh
+
+# Without this volume docker can't mount and use the overlay2 storage-driver, and will instead use the slower VFS
+# Also without this volume and overlay2, errors occur when creating a cluster using kind
+VOLUME /var/lib/docker
 
 ENTRYPOINT ["/start.sh"]

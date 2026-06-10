@@ -2,6 +2,7 @@
 
 > These repositories helped us create this repository:
 > 1. [Groupe-3D/self-hosted-runner](https://github.com/Groupe-3D/self-hosted-runner)
+> 1. [dogukancagatay/docker-ubuntu-dind](https://github.com/dogukancagatay/docker-ubuntu-dind)
 
 ## Prerequisites
 
