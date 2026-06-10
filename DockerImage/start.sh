@@ -25,4 +25,4 @@ cleanup() {
 
 trap 'cleanup' TERM 
 
-./run.sh & wait $!
+sudo -E -u runner bash -c ./run.sh & wait $!
