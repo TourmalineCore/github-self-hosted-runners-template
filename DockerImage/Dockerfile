@@ -9,6 +9,7 @@ RUN apt-get update -y && \
 
 ARG DOCKER_VERSION="28.5.2"
 
+# Install Docker
 RUN install -m 0755 -d /etc/apt/keyrings && \
     curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc && \
     chmod a+r /etc/apt/keyrings/docker.asc && \
@@ -25,6 +26,7 @@ RUN install -m 0755 -d /etc/apt/keyrings && \
                    docker-compose-plugin && \
     rm -rf /var/lib/apt/lists/*
 
+# Add a user named runner and add it to sudoers
 RUN useradd -m runner && \
     usermod -aG sudo runner && \
     echo "%sudo   ALL=(ALL:ALL) NOPASSWD:ALL" > /etc/sudoers
@@ -32,6 +34,7 @@ RUN useradd -m runner && \
 ARG TARGETARCH
 ARG RUNNER_VERSION="2.334.0"
 
+# Set up the actions runner
 RUN ARCH=$([ "$TARGETARCH" = "amd64" ] && echo x64 || echo arm64) && \
     cd /home/runner && \
     mkdir actions-runner && \
