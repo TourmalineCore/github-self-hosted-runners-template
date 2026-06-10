@@ -18,5 +18,5 @@ cleanup() {
 
 trap 'cleanup' TERM 
 
-# Ctart runner
+# Start runner
 ./run.sh & wait $!
