@@ -26,4 +26,4 @@ cleanup() {
 trap 'cleanup' TERM 
 
 # Start a new session for the runner user to make new group settings accessible in the runner and start runner
-sudo -E -u runner bash -c ./run.sh & wait $!
+sudo -u runner bash -c ./run.sh & wait $!
