@@ -9,6 +9,8 @@
 
 ## Configuring runners
 
+### Environment variables 
+
 1. Open `github-self-hosted-runners-template` repo folder
 
 2. Copy .env.example file with env variables as .env
@@ -20,9 +22,26 @@ Or use this link: https://github.com/organizations/<ORGANIZATION_NAME>/settings/
 
 4. Open .env file
 
-4. Paste the copied token instead of `<TO_BE_MODIFIED!!!>`
+5. Paste the copied token instead of `<TO_BE_MODIFIED!!!>`. It can be found in the `Configure` section
 
-5. Change TourmalineCore to your organization name
+6. Change TourmalineCore to your organization name
+
+Additionally, you can specify the runners group to which the runner will be added using the `RUNNER_GROUP` variable. You can also specify labels that can be used to select the runner in the workflow using the `LABELS` variable.
+
+### Replication and resources
+The number of replicas, resources limits, and reservations can be modified in the docker-compose.yml file.
+```yaml
+    deploy:
+      mode: replicated
+      replicas: 2
+      resources:
+       limits:
+        cpus: '2'
+        memory: 2G
+       reservations:
+        cpus: '0.1'
+        memory: 256M
+``` 
 
 ## Run runners
 
