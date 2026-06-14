@@ -7,22 +7,42 @@
 ## Prerequisites
 
 1. Install Docker Desktop (Windows, macOS) or Docker Engine (Linux)
->Note: It seems like there is Docker Engine for Linux (https://docs.docker.com/desktop/setup/install/linux/ubuntu/).
 
-> The commands below are for Ubuntu and macOS
 ## Configuring runners
 
-1. Open repo folder
-```
-cd github-self-hosted-runners-template
-```
-2. Copy file with env variables and open it
-```
-cp .env.example .env
-nano .env
-```
-3. Get runner registration token from GitHub -> TourmalineCore -> Settings -> Actions -> Runners -> [New runner](https://github.com/organizations/TourmalineCore/settings/actions/runners/new)
-4. Paste the copied token instead of `<TO_BE_MODIFIED!!!>`
+### Environment variables 
+
+1. Open `github-self-hosted-runners-template` repo folder
+
+2. Copy .env.example file with env variables as .env
+
+3. Get runner registration token from GitHub -> <ORGANIZATION_NAME> -> Settings -> Actions -> Runners -> New runner
+
+Or use this link: https://github.com/organizations/<ORGANIZATION_NAME>/settings/actions/runners/new
+>Change `<ORGANIZATION_NAME>` to your organization name
+
+4. Open .env file
+
+5. Paste the copied token instead of `<TO_BE_MODIFIED!!!>`. It can be found in the `Configure` section
+
+6. Change TourmalineCore to your organization name
+
+Additionally, you can specify the runners group to which the runner will be added using the `RUNNER_GROUP` variable. You can also specify labels that can be used to select the runner in the workflow using the `LABELS` variable.
+
+### Replication and resources
+The number of replicas, resources limits, and reservations can be modified in the docker-compose.yml file.
+```yaml
+    deploy:
+      mode: replicated
+      replicas: 2
+      resources:
+       limits:
+        cpus: '2'
+        memory: 2G
+       reservations:
+        cpus: '0.1'
+        memory: 256M
+``` 
 
 ## Run runners
 
