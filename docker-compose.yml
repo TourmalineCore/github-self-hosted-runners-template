@@ -5,6 +5,7 @@ services:
       context: ./DockerImage
     restart: unless-stopped
     env_file: .env
+    privileged: true
     deploy:
       mode: replicated
       replicas: 2
@@ -15,5 +16,3 @@ services:
        reservations:
         cpus: '0.1'
         memory: 256M
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
